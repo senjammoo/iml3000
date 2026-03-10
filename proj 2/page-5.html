@@ -72,3 +72,174 @@
       position: relative;
       z-index: 1;
     }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 82px;
+      letter-spacing: 10px;
+      margin-bottom: 30px;
+      text-transform: lowercase;
+      background: linear-gradient(160deg,
+        #ffffff 0%,
+        #ffd6c8 40%,
+        #ffaa88 80%,
+        rgba(255,120,80,0.3) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 40px rgba(255,140,100,0.3));
+      animation: glow 5s ease-in-out infinite;
+      opacity: 0;
+      animation: fadeUp 1.5s ease forwards, glow 5s ease-in-out 1.5s infinite;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 40px rgba(255,140,100,0.3)); }
+      50%       { filter: drop-shadow(0 0 70px rgba(255,160,120,0.5)); }
+    }
+
+    .text-space {
+      font-size: 16px;
+      line-height: 2.4;
+      margin-bottom: 40px;
+      padding: 24px 28px;
+      color: rgba(255, 220, 200, 0.65);
+      letter-spacing: 1.5px;
+      border-left: 1px solid rgba(255, 160, 120, 0.2);
+      background: linear-gradient(90deg, rgba(255,140,100,0.04), transparent);
+      position: relative;
+      opacity: 0;
+      animation: fadeUp 1.5s ease 0.4s forwards;
+    }
+
+    .text-space::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 40px; height: 1px;
+      background: rgba(255, 160, 120, 0.4);
+    }
+
+    .image-space {
+      width: 100%;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 40px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255,160,120,0.15);
+      box-shadow:
+        0 0 50px rgba(255,100,60,0.06),
+        0 0 100px rgba(200,80,60,0.04);
+      opacity: 0;
+      animation: fadeUp 1.5s ease 0.7s forwards;
+    }
+
+    .image-space img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.75) saturate(0.8) sepia(0.15);
+      transition: all 2s ease;
+    }
+
+    .image-space:hover img {
+      filter: brightness(0.95) saturate(1.1) sepia(0.05);
+    }
+
+    /* Soft warmth washing over image */
+    .image-space::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 120%,
+        rgba(255,120,80,0.1) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+      z-index: 1;
+      animation: breathe 6s ease-in-out infinite;
+    }
+
+    /* Vignette */
+    .image-space::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.5) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .nav-page {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 50px;
+      opacity: 0;
+      animation: fadeUp 1.5s ease 1s forwards;
+    }
+
+    .nav-page a {
+      text-decoration: none;
+      color: rgba(255, 200, 170, 0.5);
+      border: 1px solid rgba(255, 160, 120, 0.2);
+      padding: 10px 28px;
+      letter-spacing: 3px;
+      font-size: 12px;
+      text-transform: uppercase;
+      transition: all 0.6s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-page a::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,160,100,0.08), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .nav-page a:hover {
+      color: #ffe0d0;
+      border-color: rgba(255, 180, 140, 0.6);
+      box-shadow: 0 0 20px rgba(255,140,100,0.15),
+                  0 0 40px rgba(255,100,60,0.08);
+      text-shadow: 0 0 12px rgba(255,180,140,0.6);
+    }
+
+    .nav-page a:hover::before {
+      transform: translateX(100%);
+    }
+  </style>
+</head>
+<body class="page">
+  <div class="page-container">
+    <h1>RETURN</h1>
+    <div class="text-space">
+      <p>
+        We return to where we started.<br>
+        The sky and stars remain the same...<br>
+      </p>
+    </div>
+    <div class="image-space">
+      <img src="https://images.unsplash.com/photo-1682988347200-7bd50be0dab8?ixid=M3w3Nzk0OTl8MHwxfHNlYXJjaHwzMnx8cmV0dXJufGVufDF8fHx8MTc3MjU3OTY2OXww&ixlib=rb-4.1.0&w=1080&q=80&fit=max&fm=jpg&cs=tinysrgb">
+    </div>
+    <div class="nav-page">
+      <a href="page-4.html" class="back">← Back</a>
+      <a href="index.html" class="next">Home</a>
+    </div>
+  </div>
+</body>
+</html>
