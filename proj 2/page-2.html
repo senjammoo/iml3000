@@ -5,49 +5,175 @@
   <title>Darkness</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    
+    @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Share+Tech+Mono&display=swap');
+
+    :root {
+      --void: #000000;
+      --deep: #080810;
+      --dim: #0d0d1a;
+      --glow-white: rgba(255,255,255,0.08);
+      --flicker: rgba(255,255,255,0.85);
+    }
+
     body.page {
-      background-color: black;   /* black bg */
-      color: white;              /* white text */
-      font-family: "Courier New", monospace;
+      background-color: var(--void);
+      color: white;
+      font-family: 'Share Tech Mono', monospace;
       margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated noise grain overlay */
+    body.page::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      background-size: 150px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+      animation: grain 0.5s steps(2) infinite;
+    }
+
+    @keyframes grain {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(-2px, 1px); }
+      50%  { transform: translate(1px, -2px); }
+      75%  { transform: translate(2px, 2px); }
+      100% { transform: translate(-1px, -1px); }
+    }
+
+    /* Vignette edge darkening */
+    body.page::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, black 100%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .page-container {
       width: 70%;
       margin: 60px auto;
-      text-align: left;          /* different layout from home */
+      text-align: left;
+      position: relative;
+      z-index: 1;
     }
 
+    /* Glitch title effect */
     h1 {
-      font-size: 60px;
-      text-shadow: 0 0 10px white; /* subtle glow */
+      font-family: 'Special Elite', cursive;
+      font-size: 72px;
       margin-bottom: 30px;
+      color: white;
+      position: relative;
+      letter-spacing: 6px;
+      animation: flicker 6s infinite;
+    }
+
+    h1::before,
+    h1::after {
+      content: 'Darkness';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+    }
+
+    h1::before {
+      color: rgba(255, 60, 60, 0.6);
+      animation: glitch-1 4s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+    }
+
+    h1::after {
+      color: rgba(100, 160, 255, 0.4);
+      animation: glitch-2 4s infinite;
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+    }
+
+    @keyframes flicker {
+      0%, 95%, 97%, 100% { opacity: 1; }
+      96% { opacity: 0.4; }
+    }
+
+    @keyframes glitch-1 {
+      0%, 90%, 100% { transform: translate(0); opacity: 0; }
+      91% { transform: translate(-3px, 1px); opacity: 1; }
+      93% { transform: translate(3px, -1px); opacity: 1; }
+      95% { transform: translate(0); opacity: 0; }
+    }
+
+    @keyframes glitch-2 {
+      0%, 85%, 100% { transform: translate(0); opacity: 0; }
+      86% { transform: translate(3px, 2px); opacity: 1; }
+      88% { transform: translate(-2px, -1px); opacity: 1; }
+      90% { transform: translate(0); opacity: 0; }
     }
 
     .text-space {
-      font-size: 18px;
-      line-height: 1.8;
+      font-size: 17px;
+      line-height: 2;
       margin-bottom: 40px;
-      padding: 0 20px;
-      text-shadow: 0 0 5px rgba(255,255,255,0.3);
+      padding: 24px 28px;
+      border-left: 1px solid rgba(255,255,255,0.15);
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), transparent);
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.5px;
+      position: relative;
+    }
+
+    /* Dim corner accent */
+    .text-space::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 30px; height: 1px;
+      background: rgba(255,255,255,0.3);
     }
 
     .image-space {
       width: 100%;
-      height: 300px;
-      border: 1px solid white;
-      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+      height: 320px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow:
+        0 0 40px rgba(0,0,0,0.9),
+        inset 0 0 60px rgba(0,0,0,0.5);
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 40px;
+      overflow: hidden;
+      position: relative;
     }
 
-    .placeholder {
-      opacity: 0.5;
-      font-size: 16px;
-      letter-spacing: 1px;
+    .image-space img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.6) contrast(1.2) saturate(0.3);
+      transition: filter 1.2s ease;
+    }
+
+    .image-space:hover img {
+      filter: brightness(0.85) contrast(1.1) saturate(0.5);
+    }
+
+    /* Scanline overlay on image */
+    .image-space::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
     }
 
     .nav-page {
@@ -58,44 +184,54 @@
 
     .nav-page a {
       text-decoration: none;
-      color: white;
-      border: 1px solid white;
-      padding: 10px 20px;
-      transition: 0.4s ease;
+      color: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 10px 28px;
+      letter-spacing: 2px;
+      font-size: 13px;
+      text-transform: uppercase;
+      transition: all 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-page a::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: white;
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+      z-index: -1;
     }
 
     .nav-page a:hover {
-      background-color: white;
       color: black;
-      box-shadow: 0 0 15px white;
+      border-color: white;
+      box-shadow: 0 0 20px rgba(255,255,255,0.15);
+    }
+
+    .nav-page a:hover::before {
+      transform: translateX(0);
     }
   </style>
 </head>
-
 <body class="page">
-
   <div class="page-container">
-
     <h1>Darkness</h1>
-
     <div class="text-space">
       <p>
-        Darkness is space waiting to be explored.<br>
-        Words can fill it, images can define it.
-        It can not compete with the light.
+       Darkness is not all scary... <br>
+        It is a space of mystery, waiting to be explored... 
       </p>
     </div>
-
     <div class="image-space">
-     <img src="https://images.unsplash.com/photo-1500206329404-5057e0aefa48?ixid=M3w3Nzk0OTl8MHwxfHNlYXJjaHwxfHxkYXJrbmVzc3xlbnwxfHx8fDE3NzI1Nzk1NDl8MA&amp;ixlib=rb-4.1.0&amp;w=1080&amp;q=80&amp;fit=max&amp;fm=jpg&amp;cs=tinysrgb">
+      <img src="https://images.unsplash.com/photo-1500206329404-5057e0aefa48?ixid=M3w3Nzk0OTl8MHwxfHNlYXJjaHwxfHxkYXJrbmVzc3xlbnwxfHx8fDE3NzI1Nzk1NDl8MA&ixlib=rb-4.1.0&w=1080&q=80&fit=max&fm=jpg&cs=tinysrgb">
     </div>
-
     <div class="nav-page">
-      <a href="index.html" class="back">Back</a>
-      <a href="page-3.html" class="next">Next</a>
+      <a href="index.html" class="back">← Back</a>
+      <a href="page-3.html" class="next">Next →</a>
     </div>
-
   </div>
-
 </body>
 </html>
