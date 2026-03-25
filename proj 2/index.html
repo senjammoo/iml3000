@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>POLARIS</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-stars.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400&family=Cormorant+Garamond:ital,wght@1,300&family=Share+Tech+Mono&display=swap');
 
@@ -28,7 +29,7 @@
       overflow-x: hidden;
     }
 
-    /* Star field — fixed, layered dots */
+    /* Star field */
     body.home::before {
       content: '';
       position: fixed;
@@ -57,7 +58,7 @@
       animation: slowDrift 90s linear infinite;
     }
 
-    /* Polaris — the north star, fixed and bright at center-top */
+    /* Polaris north star dot */
     body.home::after {
       content: '';
       position: fixed;
@@ -104,16 +105,22 @@
       }
     }
 
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     .container {
       width: 80%;
       margin: 0 auto;
       text-align: center;
       position: relative;
       z-index: 1;
-      padding-top: 120px;
+      padding-top: 160px;
+      padding-bottom: 80px;
     }
 
-    /* Thin crosshair lines emanating from polaris position */
+    /* Crosshair from north star */
     .container::before {
       content: '';
       position: fixed;
@@ -133,13 +140,52 @@
       z-index: 0;
     }
 
+    /* ── Poem above the title ── */
+    .poem {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 16px;
+      line-height: 2.9;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.32);
+      margin: 0 auto 80px auto;
+      max-width: 580px;
+      opacity: 0;
+      animation: fadeUp 1.8s ease 0.2s forwards;
+    }
+
+    /* ── POLARIS title ── */
     #title {
       font-family: 'Cinzel', serif;
       font-weight: 300;
       font-size: 90px;
       letter-spacing: 22px;
       text-transform: uppercase;
-      margin-bottom: 0;
+      margin: 0;
+      cursor: default;
+
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      text-shadow:
+        0 0 30px  rgba(255,255,255,0.95),
+        0 0 65px  rgba(200,220,255,0.7),
+        0 0 130px rgba(150,190,255,0.4),
+        0 0 240px rgba(100,150,255,0.2);
+
+      transition:
+        text-shadow  0.8s ease,
+        filter       0.8s ease;
+
+      opacity: 0;
+      animation: fadeUp 1.8s ease 0.55s forwards;
+    }
+
+    #title.faded-in {
+      opacity: 1 !important;
+      animation: none;
+    }
+
+    #title.revealed {
       background: linear-gradient(180deg,
         #ffffff 0%,
         #ddeeff 35%,
@@ -149,82 +195,53 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      text-shadow: none;
+      opacity: 1 !important;
       filter: drop-shadow(0 0 40px rgba(150,200,255,0.4))
               drop-shadow(0 0 80px rgba(100,160,255,0.15));
-      animation: titleGlow 5s ease-in-out infinite, fadeUp 1.8s ease forwards;
-      opacity: 0;
+      animation: titleGlow 5s ease-in-out infinite !important;
     }
 
     @keyframes titleGlow {
-      0%, 100% { filter: drop-shadow(0 0 40px rgba(150,200,255,0.4)) drop-shadow(0 0 80px rgba(100,160,255,0.15)); }
-      50%       { filter: drop-shadow(0 0 70px rgba(180,220,255,0.7)) drop-shadow(0 0 120px rgba(120,180,255,0.3)); }
+      0%, 100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 40px rgba(150,200,255,0.4)) drop-shadow(0 0 80px rgba(100,160,255,0.15));
+      }
+      50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 70px rgba(180,220,255,0.7)) drop-shadow(0 0 120px rgba(120,180,255,0.3));
+      }
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
+    /* ── Sen byline below title ── */
     .author {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 16px;
+      font-size: 14px;
       letter-spacing: 5px;
-      color: rgba(255,255,255,0.35);
-      margin-top: 10px;
-      margin-bottom: 50px;
+      color: rgba(255,255,255,0.22);
+      margin-top: 16px;
+      margin-bottom: 0;
       opacity: 0;
-      animation: fadeUp 1.8s ease 0.3s forwards;
+      animation: fadeUp 1.8s ease 0.75s forwards;
     }
 
+    /* ── Nav: scattered star links ── */
     .nav {
-      margin: 0 0 60px 0;
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      opacity: 0;
-      animation: fadeUp 1.8s ease 0.5s forwards;
-    }
-
-    .nav a {
-      margin: 0;
-      padding: 12px 30px;
-      text-decoration: none;
-      color: rgba(255,255,255,0.45);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-right: none;
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      transition: all 0.5s ease;
       position: relative;
-      overflow: hidden;
+      width: 100%;
+      height: 160px;
+      margin: 65px 0 75px 0;
+      opacity: 0;
+      animation: fadeUp 1.8s ease 0.95s forwards;
     }
 
-    .nav a:last-child {
-      border-right: 1px solid rgba(255,255,255,0.1);
-    }
+    .nav .star-btn:nth-child(1) { position: absolute; left: 8%;  top: 65px; }
+    .nav .star-btn:nth-child(2) { position: absolute; left: 30%; top: 18px; }
+    .nav .star-btn:nth-child(3) { position: absolute; left: 60%; top: 85px; }
+    .nav .star-btn:nth-child(4) { position: absolute; left: 80%; top: 28px; }
 
-    .nav a::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(180,210,255,0.08), transparent);
-      transform: translateY(-100%);
-      transition: transform 0.4s ease;
-    }
-
-    .nav a:hover {
-      color: white;
-      border-color: rgba(180,210,255,0.35);
-      box-shadow: 0 0 20px rgba(150,190,255,0.1);
-      letter-spacing: 4px;
-    }
-
-    .nav a:hover::before {
-      transform: translateY(0);
-    }
-
+    /* ── Image ── */
     .image-space {
       width: 65%;
       height: 340px;
@@ -236,7 +253,7 @@
         0 0 60px rgba(100,150,255,0.08),
         0 0 120px rgba(80,120,220,0.05);
       opacity: 0;
-      animation: fadeUp 1.8s ease 0.8s forwards;
+      animation: fadeUp 1.8s ease 1.1s forwards;
     }
 
     .image-space img {
@@ -253,7 +270,6 @@
       transform: scale(1.0);
     }
 
-    /* Light thread from Polaris down into the image */
     .image-space::before {
       content: '';
       position: absolute;
@@ -271,7 +287,6 @@
       pointer-events: none;
     }
 
-    /* Vignette */
     .image-space::after {
       content: '';
       position: absolute;
@@ -284,17 +299,173 @@
 </head>
 <body class="home">
   <div class="container">
+
+    <p class="poem">
+      Life is full of highs and lows,<br>
+      good times and dark times.<br>
+      In these times, it is easy to slip under the shadows of the universe,<br>
+      drifting into an endless shadowy void.<br>
+      But it is just as easy to find a path through…
+    </p>
+
     <h1 id="title">POLARIS</h1>
-    <p class="author">by Sen</p>
-    <div class="nav">
-      <a href="page-2.html">Darkness</a>
-      <a href="page-3.html">Distance</a>
-      <a href="page-4.html">Light</a>
-      <a href="page-5.html">Return</a>
-    </div>
+
+    <p class="author">Sen</p>
+
+    <nav class="nav">
+      <a class="star-btn" href="page-2.html">
+        <span class="star-dot"></span>
+        <span class="star-label">Darkness</span>
+      </a>
+      <a class="star-btn" href="page-3.html">
+        <span class="star-dot"></span>
+        <span class="star-label">Distance</span>
+      </a>
+      <a class="star-btn" href="page-4.html">
+        <span class="star-dot"></span>
+        <span class="star-label">Light</span>
+      </a>
+      <a class="star-btn" href="page-5.html">
+        <span class="star-dot"></span>
+        <span class="star-label">Return</span>
+      </a>
+    </nav>
+
     <div class="image-space">
       <img src="https://images.unsplash.com/photo-1537420327992-d6e192287183?ixid=M3w3Nzk0OTl8MHwxfHNlYXJjaHwyfHxzdGFyfGVufDF8fHx8MTc3MTkzMjIxNHww&ixlib=rb-4.1.0&w=1080&q=80&fit=max&fm=jpg&cs=tinysrgb">
     </div>
+
   </div>
+
+  <!-- Title hover JS -->
+  <script>
+    const title = document.getElementById('title');
+
+    title.addEventListener('animationend', () => {
+      title.classList.add('faded-in');
+    });
+
+    title.addEventListener('mouseenter', () => {
+      title.classList.add('revealed');
+    });
+  </script>
+
+  <!-- p5.js animated star field + shooting stars -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script>
+    new p5(function(p) {
+
+      const NUM_STARS   = 180;
+      const NUM_SHOOT   = 3;
+      const DRIFT_SPEED = 0.12;
+      const TWINKLE_SPD = 0.018;
+
+      let stars    = [];
+      let shooters = [];
+      let canvas;
+
+      class Star {
+        constructor() { this.reset(true); }
+
+        reset(randomY = false) {
+          this.x         = p.random(p.width);
+          this.y         = randomY ? p.random(p.height) : p.random(-10, -2);
+          this.size      = p.random(0.4, 2.2);
+          this.spd       = p.random(0.04, DRIFT_SPEED);
+          this.drift     = p.random(-0.08, 0.08);
+          this.phase     = p.random(p.TWO_PI);
+          this.r         = p.random(180, 255);
+          this.g         = p.random(200, 255);
+          this.b         = 255;
+          this.baseAlpha = p.random(90, 220);
+        }
+
+        update() {
+          this.y     += this.spd;
+          this.x     += this.drift;
+          this.phase += TWINKLE_SPD;
+          if (this.y > p.height + 5) this.reset();
+        }
+
+        draw() {
+          let alpha    = this.baseAlpha * (0.4 + 0.6 * (0.5 + 0.5 * Math.sin(this.phase)));
+          let glowSize = this.size * 4;
+          p.noStroke();
+          p.fill(this.r, this.g, this.b, alpha * 0.18);
+          p.ellipse(this.x, this.y, glowSize, glowSize);
+          p.fill(this.r, this.g, this.b, alpha);
+          p.ellipse(this.x, this.y, this.size, this.size);
+        }
+      }
+
+      class ShootingStar {
+        constructor() { this.spawn(); }
+
+        spawn() {
+          this.x     = p.random(p.width * 0.1, p.width * 0.9);
+          this.y     = p.random(0, p.height * 0.35);
+          let angle  = p.random(p.radians(20), p.radians(60));
+          let speed  = p.random(6, 14);
+          this.vx    = Math.cos(angle) * speed;
+          this.vy    = Math.sin(angle) * speed;
+          this.len   = p.random(60, 160);
+          this.alpha = 255;
+          this.fade  = p.random(4, 9);
+          this.done  = false;
+        }
+
+        update() {
+          this.x     += this.vx;
+          this.y     += this.vy;
+          this.alpha -= this.fade;
+          if (this.alpha <= 0 || this.x > p.width + 20 || this.y > p.height + 20) {
+            this.done = true;
+          }
+        }
+
+        draw() {
+          let tailX = this.x - this.vx * (this.len / 14);
+          let tailY = this.y - this.vy * (this.len / 14);
+          p.strokeWeight(2.5);
+          p.stroke(180, 210, 255, this.alpha * 0.18);
+          p.line(tailX, tailY, this.x, this.y);
+          p.strokeWeight(1.2);
+          p.stroke(240, 248, 255, this.alpha * 0.85);
+          p.line(tailX, tailY, this.x, this.y);
+          p.noStroke();
+          p.fill(255, 255, 255, this.alpha);
+          p.ellipse(this.x, this.y, 2.5, 2.5);
+        }
+      }
+
+      p.setup = function() {
+        canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+        canvas.position(0, 0);
+        canvas.style('position', 'fixed');
+        canvas.style('top', '0');
+        canvas.style('left', '0');
+        canvas.style('z-index', '-1');
+        canvas.style('pointer-events', 'none');
+        p.noStroke();
+        for (let i = 0; i < NUM_STARS; i++) stars.push(new Star());
+      };
+
+      p.draw = function() {
+        p.clear();
+        for (let s of stars) { s.update(); s.draw(); }
+        if (shooters.length < NUM_SHOOT && p.random() < 0.004) {
+          shooters.push(new ShootingStar());
+        }
+        shooters = shooters.filter(s => !s.done);
+        for (let s of shooters) { s.update(); s.draw(); }
+      };
+
+      p.windowResized = function() {
+        p.resizeCanvas(p.windowWidth, p.windowHeight);
+      };
+
+    });
+  </script>
+
 </body>
 </html>
