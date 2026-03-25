@@ -1,0 +1,135 @@
+/* ============================================
+   style-stars.css
+   Star nav button styles for POLARIS index
+   ============================================ */
+
+/* ── Star button container ── */
+.star-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+  justify-content: flex-end;
+  min-height: 80px;
+}
+
+/* ── The glowing dot ── */
+.star-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  box-shadow:
+    0 0 6px 2px  rgba(255, 255, 255, 0.8),
+    0 0 14px 5px rgba(200, 220, 255, 0.45),
+    0 0 30px 10px rgba(150, 190, 255, 0.15);
+  transition:
+    width       0.4s ease,
+    height      0.4s ease,
+    box-shadow  0.4s ease;
+  animation: starPulse 3s ease-in-out infinite;
+}
+
+/* Stagger each star's pulse phase */
+.star-btn:nth-child(1) .star-dot { animation-delay: 0s; }
+.star-btn:nth-child(2) .star-dot { animation-delay: 0.7s; }
+.star-btn:nth-child(3) .star-dot { animation-delay: 1.4s; }
+.star-btn:nth-child(4) .star-dot { animation-delay: 2.1s; }
+
+/* ── Crosshair spikes via pseudo-elements ── */
+.star-dot::before,
+.star-dot::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 2px;
+  transition: all 0.4s ease;
+}
+
+/* Vertical spike */
+.star-dot::before {
+  width: 1px;
+  height: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Horizontal spike */
+.star-dot::after {
+  width: 10px;
+  height: 1px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ── Label: hidden at rest ── */
+.star-label {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.0);
+  text-shadow: none;
+  opacity: 0;
+  transition:
+    opacity     0.35s ease,
+    color       0.35s ease,
+    letter-spacing 0.35s ease,
+    text-shadow 0.35s ease;
+  white-space: nowrap;
+}
+
+/* ── Hover: star expands + corona blooms + label fades in ── */
+.star-btn:hover .star-dot {
+  width: 12px;
+  height: 12px;
+  box-shadow:
+    0 0 10px 3px  rgba(255, 255, 255, 0.95),
+    0 0 25px 8px  rgba(200, 220, 255, 0.65),
+    0 0 55px 18px rgba(150, 190, 255, 0.35),
+    0 0 90px 30px rgba(100, 150, 255, 0.15);
+  animation-play-state: paused;
+}
+
+.star-btn:hover .star-dot::before {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.star-btn:hover .star-dot::after {
+  width: 32px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.star-btn:hover .star-label {
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 4px;
+  text-shadow:
+    0 0 12px rgba(180, 210, 255, 0.6),
+    0 0 24px rgba(140, 180, 255, 0.3);
+}
+
+/* ── Idle pulse animation ── */
+@keyframes starPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 6px 2px  rgba(255, 255, 255, 0.8),
+      0 0 14px 5px rgba(200, 220, 255, 0.45),
+      0 0 30px 10px rgba(150, 190, 255, 0.15);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow:
+      0 0 10px 3px  rgba(255, 255, 255, 0.95),
+      0 0 22px 8px  rgba(200, 220, 255, 0.6),
+      0 0 50px 16px rgba(150, 190, 255, 0.25);
+    transform: scale(1.15);
+  }
+}
